@@ -1,19 +1,50 @@
 #include "Aggregator.h"
 
 
-Aggregator::Aggregator(){
-  myStore = new BBStorage();
+Aggregator::Aggregator(SDInterface* mSD){
+  this->mStore = new BBStorage(mSD);
   return;
 }
 
-void Aggregator::addToAggregator(String data){
-	//this->currentDataSet = this->currentDataSet + data + "\n";
+
+/*  Function AddToAggregator(String data)
+ *    Returns: Integer ([Success,0] / [Fail,1])
+ *
+ *    Parameters: String
+ *
+ *    Add the current data string to the aggregator
+ */
+int Aggregator::addToAggregator(String data){
+	this->currentDataSet = this->currentDataSet + data + "\n";
 	
-	return;
+	return 0;
 }
 
-void Aggregator::forcePushAggregator(){
-  myStore->testAndReplace(this->currentDataSet);
-	return;
+
+/*  Function forcePushAggregator()
+ *    Returns: Integer ([Success,0] / [Fail,1])
+ *
+ *    Parameters: none
+ *
+ *    Force a push of the aggregator to write to the SD card
+ */
+int Aggregator::forcePushAggregator(){
+  
+	return this->mStore->testAndReplace(this->currentDataSet);
+}
+
+
+/* Function initAndTest()
+ *    Returns: Integer ([Success,0] / [Fail,1])
+ *  
+ *    Parameters: None
+ *    
+ *    Initialize and test Aggregator Class
+ */
+int Aggregator::initAndTest(){
+  if(!this->addToAggregator("AggTestData"))
+    if(!this->forcePushAggregator())
+      return 0;
+  return 1;
 }
 

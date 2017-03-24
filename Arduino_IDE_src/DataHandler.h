@@ -5,43 +5,57 @@
   #include "Arduino.h"
   
 	class DataHandler{
+    private:
+      int p_tx;
+      int p_rx;
+
+      bool scaleTh = false;
+      
 		public:
-
-
-    bool scaleTh = false;
-    bool test = true;
     Aggregator *agg;
 
-    DataHandler();
+    DataHandler(SDInterface*, int, int, bool);
 		
 		/*	Function scaleThroughput()
-		 *		Returns: VOID 
+		 *		Returns: Integer ([Success,0] / [Fail,1])
 		 *
 		 *		Parameters: none
 		 *
 		 *		Tracks the current throughput under/over load and 
 		 *			sends cleanflight a new update rate (if ON)
 		 */
-		 void scaleThroughput();
+		 int scaleThroughput();
 		 
 		 
 		 /*	Function readI2C()
-		 *		Returns: string 
+		 *		Returns: Integer ([Success,0] / [Fail,1])
 		 *
 		 *		Parameters: none
 		 *
 		 *		Reads I2C data from CleanFlight
 		 */
-		 String readI2C(String data);
-     String readI2C();
+		 int readI2C(String data);
+     int readI2C();
 		 
 		 /*	Function writeI2C(string data)
-		 *		Returns: VOID 
+		 *		Returns: Integer ([Success,0] / [Fail,1]) 
 		 *
 		 *		Parameters: string data
 		 *
 		 *		Writes I2C data back to CleanFlight (throughput scaling)
 		 */
-		 void writeI2C(String);
+		 int writeI2C(String);
+
+     /* Function initAndTest()
+      *    Returns: Integer ([Success,0] / [Fail,1])
+      *  
+      *    Parameters: None
+      *    
+      *    Initialize and test DH Class
+      */
+     int initAndTest();
+
+
+    
 	};
 #endif

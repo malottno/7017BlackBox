@@ -1,8 +1,11 @@
 #include "DataHandler.h"
 
 
-DataHandler::DataHandler(){
-  agg = new Aggregator();
+DataHandler::DataHandler(SDInterface* mSD, int p_tx, int p_rx, bool scale){
+  this->agg = new Aggregator(mSD);
+  this->p_tx = p_tx;
+  this->p_rx = p_rx;
+  this->scaleTh = scale;
   return;    
 }
 
@@ -15,11 +18,11 @@ DataHandler::DataHandler(){
  *		Tracks the current throughput under/over load and 
  *			sends cleanflight a new update rate (if ON)
  */
-void DataHandler::scaleThroughput(){
+int DataHandler::scaleThroughput(){
 	if(this->scaleTh){
-			return;
+			return 0;
 	}		
-	return;
+	return 0;
 }
 
 
@@ -30,10 +33,9 @@ void DataHandler::scaleThroughput(){
  *
  *		Reads I2C data from CleanFlight
  */
-String DataHandler::readI2C(){
+int DataHandler::readI2C(){
 	String retData = "";
 
-	return retData;
 }
 
 
@@ -44,13 +46,13 @@ String DataHandler::readI2C(){
  *
  *		Reads I2C data from CleanFlight
  */
-String DataHandler::readI2C(String data){
+int DataHandler::readI2C(String data){
  String retData = "";
 	if(data != ""){
-		agg->addToAggregator(data);
+		return agg->addToAggregator(data);
 	}
 
- return retData;
+ return 0;
 }
 
 
@@ -61,7 +63,23 @@ String DataHandler::readI2C(String data){
  *
  *		Writes I2C data back to CleanFlight (throughput scaling)
  */
-void DataHandler::writeI2C(String data){
-	return;
+int DataHandler::writeI2C(String data){
+	return 0;
 }
+
+/* Function initAndTest()
+ *    Returns: Integer ([Success,0] / [Fail,1])
+ *  
+ *    Parameters: None
+ *    
+ *    Initialize and test Aggregator Class
+ */
+int DataHandler::initAndTest(){
+  if(!this->writeI2C("testData"))
+    if(!this->readI2C("TestData2"))
+      if(!this->scaleThroughput())
+        return 0;
+  return 1;
+}
+
 

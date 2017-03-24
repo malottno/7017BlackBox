@@ -1,18 +1,37 @@
 #include "SDInterface.h"
 
 
+
+SDInterface::SDInterface(int p_miso, int p_mosi, int p_clk, int p_cs){
+  this->p_miso = p_miso;
+  this->p_mosi = p_mosi;
+  this->p_clk = p_clk;
+  this->p_cs = p_cs;
+  return;
+}
+
+
+
 /*	Function initAndTest()
  *		Returns: Integer ([Success,0] / [Fail,1])
  *
- *		Parameters: None
+ *		Parameters: String testString
  */
-int SDInterface::initAndTest(){
+int SDInterface::initAndTest(String testString){
   Serial.print("Initializing SD card...");
+  
   if (!SD.begin(4)) {
-	Serial.println("initialization failed!");
-	return 0;
+  	Serial.println("initialization failed! (Check pins)");
+  	return 1;
   }
-  else return 1;
+  else {
+    Serial.print("\tSD Initialized!");
+
+    if(!writeToSD("testFile",testString))
+      if(!readFromSD("testFile"))
+        return 0;
+    return 1;
+  }
   
 }
 

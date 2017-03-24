@@ -5,13 +5,16 @@
   #include "Arduino.h"
     
 	class BBStorage{
-  
-    public:
-    
+    private:
       String fileName = "";
       SDInterface* mySD;
-      BBStorage();
-      
+
+  
+    public:
+        
+      BBStorage(SDInterface*);
+
+    
   		/*	Function testAndReplace(string data)
   		 *		Returns: Integer ([Success,0] / [Fail,1])
   		 *
@@ -25,23 +28,32 @@
   		 
   		 
   		 /*	Function writeHeader(string fileName)
-  		 *		Returns: VOID 
+  		 *		Returns: Integer ([Success,0] / [Fail,1])
   		 *
   		 *		Parameters: string fileName
   		 *
   		 *		Writes data header to fileName
   		 */
-  		 void writeHeader(String);
+  		 int writeHeader(String);
   		 
   		 
   		 /*	Function splitFile()
-  		 *		Returns: VOID 
+  		 *		Returns: Integer ([Success,0] / [Fail,1])
   		 *
   		 *		Parameters: none
   		 *
   		 *		Splits the current log file to a new file for writing to
   		 */
-  		 void splitFile();
+  		 int splitFile();
+
+       /* Function initAndTest()
+       *    Returns: Integer ([Success,0] / [Fail,1])
+       *  
+       *    Parameters: None
+       *    
+       *    Initialize and test BBStorage Class
+       */
+       int initAndTest();
 	};
 	
 #endif

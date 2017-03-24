@@ -1,8 +1,8 @@
 #include "BBStorage.h"
 
 
-BBStorage::BBStorage(){
-  mySD = new SDInterface();
+BBStorage::BBStorage(SDInterface* mSD){
+  this->mySD = mSD;
   return;
 }
 
@@ -33,30 +33,42 @@ int BBStorage::testAndReplace(String data){
 }
 
 /*	Function writeHeader(char[] fileName)
- *		Returns: VOID 
+ *		Returns: Integer ([Success,0] / [Fail,1])
  *
  *		Parameters: char[] fileName
  *
  *		Writes data header to fileName
  */
-void BBStorage::writeHeader(String fileName){
+int BBStorage::writeHeader(String fileName){
 	String header = "TestParam1,TestParam2,TestParam3,TestParam4,TestParam5\n";
-	mySD->writeToSD(fileName, header);
-	return;
+	return mySD->writeToSD(fileName, header);
 }
 
 /*	Function splitFile()
- *		Returns: VOID 
+ *		Returns: Integer ([Success,0] / [Fail,1])
  *
  *		Parameters: none
  *
  *		Splits the current log file to a new file for writing to
  */
-void BBStorage::splitFile(){
+int BBStorage::splitFile(){
 	String fileName = fileName + "_1";
 
-	writeHeader(fileName);
+	return this->writeHeader(fileName);
+}
 
-	return;
+/* Function initAndTest()
+ *    Returns: Integer ([Success,0] / [Fail,1])
+ *  
+ *    Parameters: None
+ *    
+ *    Initialize and test BBStorage Class
+ */
+int BBStorage::initAndTest(){
+  if(!this->writeHeader("testFile"))
+    if(!this->splitFile())
+      if(!this->testAndReplace("testData"))
+        return 0;
+  return 1;
 }
 

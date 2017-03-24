@@ -4,8 +4,19 @@
   #include <SD.h>
   #include "Arduino.h"
 
+  
+
 	class SDInterface{
 		public:
+      int p_miso;
+      int p_mosi;
+      int p_clk;
+      int p_cs;
+
+
+      SDInterface(int, int, int, int);
+
+   
 		 /*	Function writeToSD(char[],char[])
 		*		Returns: Integer ([Success,0] / [Fail,1])
 		*
@@ -18,9 +29,15 @@
 		 /*	Function initAndTest()
 		*		Returns: Integer ([Success,0] / [Fail,1])
 		*
-		*		Parameters: None
+		*		Parameters: String testString
+    *   
+    *     Test Connect To SD
+    *     Test Read From SD  
+    *     Test Write From SD
+    *     Test T&R with SD
+    *   
 		*/
-		 int initAndTest();
+		 int initAndTest(String);
 		
 		
 		 /*	Function readFromSD(char[],char[])
